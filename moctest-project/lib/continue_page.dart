@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moctest_project/screens/test_taking.dart';
 
 class ContinuePage extends StatelessWidget {
   @override
@@ -83,7 +84,12 @@ class ContinuePage extends StatelessWidget {
                           SizedBox(height: 20),
                           // Replaced ElevatedButton with TextButton
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => TestTaking()),
+                              );
+                            },
                             child: Text('Continue Test'),
                             style: TextButton.styleFrom(
                               foregroundColor: Colors.white, backgroundColor: Color(0xFF337AB7), // Set button color
