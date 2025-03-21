@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moctest_project/screens/copyright_info_page.dart';
+import 'package:moctest_project/screens/exit_page_one.dart';
 
 class TestTaking extends StatelessWidget {
   @override
@@ -97,7 +99,12 @@ class TestTaking extends StatelessWidget {
                                 .start, // Buttons aligned to center
                             children: [
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ExitPageOne()),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                   Color(0xFF636363), // Exit button color
@@ -114,7 +121,12 @@ class TestTaking extends StatelessWidget {
                               SizedBox(
                                   width: 10), // Added space between buttons
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => CopyrightInfoPage()),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(
                                       0xFF2A64B6), // Continue button color
