@@ -1,77 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:moctest_project/screens/section-two/section_two_quit_page.dart';
+import 'package:moctest_project/screens/section-two/Question1/question_one.dart';
+import '../../section_one/question_one/question_one_help.dart';
+import '../Question3/question_three.dart';
+import '../exit_section.dart';
+import '../help_page.dart';
+import '../quit_page.dart';
+import '../review_page.dart';
 
-import '../../help_page.dart';
-import '../../quit_page.dart';
-
-class SectionTwoStartPage extends StatefulWidget {
-  const SectionTwoStartPage({super.key});
+class QuestionTwo extends StatefulWidget {
+  const QuestionTwo({super.key});
 
   @override
   _TestCenterState createState() => _TestCenterState();
 }
 
-class _TestCenterState extends State<SectionTwoStartPage> {
+class _TestCenterState extends State<QuestionTwo> {
+  // Track selected options for each blank
+  String? selectedOptionBlankI;
+  String? selectedOptionBlankII;
 
+  bool isChecked = false;
   final TextEditingController _controller = TextEditingController();
 
-  // Stores the previous state of the text for undo functionality
-  List<String> _history = [];
-  int _historyIndex = -1;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  // Cut: Copy the current text to the clipboard and clear it
-  void _cut() {
-    // Copy to clipboard and clear the text field
-    final clipboardText = _controller.text;
-    _controller.clear();
-    setState(() {
-      _addToHistory('');
-    });
-  }
-
-  // Paste: Paste the clipboard content into the text field
-  void _paste() {
-    // This is a placeholder for paste functionality, assuming we have something to paste
-    // In real-world scenarios, you would paste content from the clipboard
-    _controller.text = '';
-    setState(() {
-      _addToHistory(_controller.text);
-    });
-  }
-
-  // Undo: Revert to the previous state of the text
-  void _undo() {
-    if (_historyIndex > 0) {
-      setState(() {
-        _historyIndex--;
-        _controller.text = _history[_historyIndex];
-      });
-    }
-  }
-
-  // Redo: Reapply the undone change
-  void _redo() {
-    if (_historyIndex < _history.length - 1) {
-      setState(() {
-        _historyIndex++;
-        _controller.text = _history[_historyIndex];
-      });
-    }
-  }
-
-  // Add current text to history for undo functionality
-  void _addToHistory(String text) {
-    if (_historyIndex < _history.length - 1) {
-      _history = _history.sublist(0, _historyIndex + 1);
-    }
-    _history.add(text);
-    _historyIndex++;
-  }
+  // Stores the state of questions (marked and selected answers)
+  Map<int, bool> markedQuestions = {};
+  Map<int, String?> selectedAnswers = {};
 
   @override
   Widget build(BuildContext context) {
@@ -116,18 +69,16 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                               ],
                             ),
                           ),
-
-                          SizedBox(width: 30),
-
+                          SizedBox(width: 112),
                           //exit section
                           Padding(
                             padding: const EdgeInsets.all(2.0),
                             child: GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => ExitSection() ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ExitSection() ),
+                                );
                               },
                               child: Container(
                                 color: Color(0xFF655060),
@@ -157,7 +108,7 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SectionTwoQuitPage() ),
+                                  MaterialPageRoute(builder: (context) => QuitPage() ),
                                 );
                               },
                               child: Container(
@@ -184,30 +135,35 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                           //mark
                           Padding(
                             padding: const EdgeInsets.all(2.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => HelpPage() ),
-                                );
-                              },
-                              child: Container(
-                                color: Color(0xFF4D4C4D),
-                                width: 70,
-                                height: 50,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Mark',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15)),
-                                    Icon(
-                                      Icons.rectangle_outlined,
+                            child: Container(
+                              color: Color(0xFF4D4C4D),
+                              width: 70,
+                              height: 50,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Mark',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5), // Add some space between text and checkbox
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isChecked = !isChecked; // Toggle checkbox state
+                                      });
+                                    },
+                                    child: Icon(
+                                      isChecked
+                                          ? Icons.check_box // Checked icon
+                                          : Icons.check_box_outline_blank, // Unchecked icon
                                       color: Colors.white,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -219,7 +175,7 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => HelpPage() ),
+                                  MaterialPageRoute(builder: (context) => ReviewPage() ),
                                 );
                               },
                               child: Container(
@@ -250,7 +206,7 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => HelpPage() ),
+                                  MaterialPageRoute(builder: (context) => QuestionOneHelp() ),
                                 );
                               },
                               child: Container(
@@ -279,10 +235,10 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                             padding: const EdgeInsets.all(2.0),
                             child: GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => NextPage()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => QuestionOne()),
+                                );
                               },
                               child: Container(
                                 color: Color(0xFF365E90),
@@ -310,10 +266,10 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                             padding: const EdgeInsets.all(2.0),
                             child: GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => NextPage()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => QuestionThree() ),
+                                );
                               },
                               child: Container(
                                 color: Color(0xFF365E90),
@@ -335,37 +291,6 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                               ),
                             ),
                           ),
-
-                          //continue
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => NextPage()),
-                                // );
-                              },
-                              child: Container(
-                                color: Color(0xFF365E90),
-                                width: 80,
-                                height: 50,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Continue',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15)),
-                                    Icon(
-                                      Icons.arrow_forward_outlined,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -375,99 +300,76 @@ class _TestCenterState extends State<SectionTwoStartPage> {
                     height: 30,
                     color: Color(0xFFF0E1E4),
                     width: double.infinity,
-                    child: Text("Section 2 of 5",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),),
+                    child:  const Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Section 2 of 5', // Regular text before "Continue"
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: ' | Question 2 of 12', // The bold "Continue"
+                            style: TextStyle(
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(height: 5),
                   Padding(
-                    padding: const EdgeInsets.only(left:90.0, right:90.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "Verbal Reasoning",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        Text(
-                          "12 Questions",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        Text(
-                          "18 minutes",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
-                        ),
-                        Divider(
-                          color: Colors.black38,
-                        ),
-                        SizedBox(height: 30),
-                        const Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'For each question, indicate the best answer using the directions given. If you need more detailed directions, select ', // Regular text before "Continue"
-                                style: TextStyle(fontSize: 13),
-                              ),
-                              TextSpan(
-                                text: 'Help ', // The bold "Continue"
-                                style: TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: 'at any time.', // Regular text after "Continue"
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ],
+                        Container(
+                          width: 600,
+                          color: Colors.grey,
+                          height: 60,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("For each blank select one entry from the corresponding column of choices. Fill all blanks in the way that best completes the text.", style: TextStyle(fontSize: 17)),
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Text.rich(
-                            TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'If a question has answer choices with ', // Regular text before "Continue"
-                                    style: TextStyle(fontSize: 13),
-                                  ),TextSpan(
-                                    text: 'ovals ', // Regular text before "Continue"
-                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: '(●), then the correct answer consists of a single choice. If a question has answer choices with ', // Regular text before "Continue"
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                  TextSpan(
-                                    text: 'square boxes ', // Regular text before "Continue"
-                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: '(□), then the correct answer consists of one or more answer choices. Read the directions for each question carefully. The directions will indicate if you should select one or more answer choices. To answer questions based on a reading passage, you may need to scroll to read the entire passage. You may also use your keyboard to navigate through the passage.', // Regular text before "Continue"
-                                    style: TextStyle(fontSize: 13,),
-                                  ),
-                                ]
-                            )
+                        SizedBox(height: 100),
+                        Text(
+                          "Given how (i) __________, the shortcomings of the standard economic model are in its portrayal of human behavior, the failure of many economists to respond to them is astonishing. They continue to fill the journals with yet more proofs of yet more (ii) __________ theorems. Others, by contrast, accept the criticisms as a challenge, seeking to expand the basic model to embrace a wider range of things people do.",
+                          style: TextStyle(fontSize: 16),
                         ),
-                        SizedBox(height: 20),
-                        const Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Select ', // Regular text before "Continue"
-                                style: TextStyle(fontSize: 13),
-                              ),
-                              TextSpan(
-                                text: 'Continue', // The bold "Continue"
-                                style: TextStyle(
-                                    fontSize: 13, fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: ' to proceed.', // Regular text after "Continue"
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ],
-                          ),
+                        SizedBox(height: 40),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              children: [
+                                Text("Blank (i)", style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(height: 10),
+                                _buildOption("overlooked", 'i'),
+                                _buildOption("occasional", 'i'),
+                                _buildOption("patent", 'i'),
+                              ],
+                            ),
+                            SizedBox(width: 15),
+                            Column(
+                              children: [
+                                Text("Blank (ii)", style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(height: 10),
+                                _buildOption("comprehensive", 'ii'),
+                                _buildOption("improbable", 'ii'),
+                                _buildOption("pervasive", 'ii'),
+                              ],
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 250),
+                        Container(
+                          width: 290,
+                          color: Colors.grey,
+                          height: 40,
+                          child: Center(child: Text("Select one entry from each column.", style: TextStyle(fontSize: 17))),
+                        ),
                       ],
                     ),
                   ),
@@ -480,6 +382,57 @@ class _TestCenterState extends State<SectionTwoStartPage> {
             color: Color(0xFFB4B4B4),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildOption(String option, String blank) {
+    bool isSelected;
+
+    // Check which blank this option belongs to and set the selection state
+    if (blank == 'i') {
+      isSelected = selectedOptionBlankI == option;
+    } else {
+      isSelected = selectedOptionBlankII == option;
+    }
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          // Toggle the selection state based on which blank is clicked
+          if (blank == 'i') {
+            // If the same option is clicked again, deselect it
+            if (selectedOptionBlankI == option) {
+              selectedOptionBlankI = null;
+            } else {
+              selectedOptionBlankI = option;
+            }
+          } else {
+            // If the same option is clicked again, deselect it
+            if (selectedOptionBlankII == option) {
+              selectedOptionBlankII = null;
+            } else {
+              selectedOptionBlankII = option;
+            }
+          }
+        });
+      },
+      child: Container(
+        width: 250,
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.black : Colors.white,
+          border: Border.all(color: Colors.black),
+        ),
+        child: Center(
+          child: Text(
+            option,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: isSelected ? Colors.white : Colors.black,
+            ),
+          ),
+        ),
       ),
     );
   }

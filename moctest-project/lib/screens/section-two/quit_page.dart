@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:moctest_project/screens/section-two/section_two_start_page.dart';
-import 'package:moctest_project/screens/section_one/analytical_writing_page.dart';
-import 'package:moctest_project/screens/section_one/analytical_writing_page_two.dart';
+import 'package:moctest_project/screens/section-two/section_two_start.dart';
 
-
-class SectionTwoQuitPage extends StatelessWidget {
-  const SectionTwoQuitPage({super.key});
+class QuitPage extends StatelessWidget {
+  const QuitPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +44,7 @@ class SectionTwoQuitPage extends StatelessWidget {
                               onTap: (){
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SectionTwoStartPage()),
+                                  MaterialPageRoute(builder: (context) => SectionTwoStart()),
                                 );
                               },
                               child: Container(
@@ -110,7 +107,7 @@ class SectionTwoQuitPage extends StatelessWidget {
                     width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 5.0, left: 8),
-                      child: Text("Section 2 to 5", style: TextStyle(
+                      child: Text("Section 1 to 5", style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),),
                     ),
@@ -135,10 +132,28 @@ class SectionTwoQuitPage extends StatelessWidget {
                           style: TextStyle(fontSize: 14),
                         ),
                         SizedBox(height: 10),
-                        Text(
-                          'Select Quit with Save to confirm that you want to quit the test or Return to Test to return to the test.',
-                          style: TextStyle(fontSize: 14),
-                        ),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 14, color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(text: 'Select ', ),
+                              TextSpan(
+                                text: 'Quit with Save ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: 'to confirm that you want to quit the test or ',
+                              ),
+                              TextSpan(
+                                text: 'Return to Test ',
+                                  style: TextStyle(fontWeight: FontWeight.bold)
+                              ),
+                              TextSpan(
+                                text: 'to return to the test.',
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   )

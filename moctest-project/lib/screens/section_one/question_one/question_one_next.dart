@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moctest_project/screens/section-two/section_two_start_page.dart';
+import '../../section-two/section_two_start.dart';
 
 class QuestionOneNext extends StatelessWidget {
   const QuestionOneNext({super.key});
@@ -44,7 +44,7 @@ class QuestionOneNext extends StatelessWidget {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SectionTwoStartPage()),
+                                  MaterialPageRoute(builder: (context) => SectionTwoStart()),
                                 );
                               },
                               child: Container(
